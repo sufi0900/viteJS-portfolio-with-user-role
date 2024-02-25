@@ -11,6 +11,7 @@ import {
   Typography,
   CircularProgress,
   Avatar,
+  Alert,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
@@ -24,11 +25,22 @@ const initialState = {
 
 const Register = () => {
   const [formValue, setFormValue] = useState(initialState);
+  const [showAlert, setShowAlert] = useState(false);
+
   const { loading, error } = useSelector((state) => ({ ...state.auth }));
   const { email, password, firstName, lastName, confirmPassword } = formValue;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      setShowAlert(true);
+    }
+  }, [error]);
 
+  const handleAlertClose = () => {
+    setShowAlert(false);
+  };
   useEffect(() => {
     error && toast.error(error);
   }, [error]);
@@ -39,15 +51,10 @@ const Register = () => {
       return toast.error("Password should match");
     }
     if (email && password && firstName && lastName && confirmPassword) {
-      dispatch(register({ formValue, navigate, toast }))
-        .then(() => {
-          // Redirect to the login page after successful registration
-          navigate("/login");
-        })
-        .catch((error) => {
-          // Handle registration error if needed
-          console.error("Registration error:", error);
-        });
+      dispatch(register({ formValue, navigate, toast })).catch((error) => {
+        // Handle registration error if needed
+        console.error("Registration error:", error);
+      });
     }
   };
 
@@ -63,6 +70,7 @@ const Register = () => {
     backdropFilter: "blur(5px)",
     WebkitBackdropFilter: "blur(5px)",
     border: "1px solid rgba(255, 255, 255, 0.3)",
+    marginBottom: "16px", // Added margin-bottom
   };
   return (
     <div
@@ -79,6 +87,11 @@ const Register = () => {
         </Avatar>
         <Typography variant="h5">Sign Up</Typography>
         <CardContent>
+          <Alert severity="warning" onClose={handleAlertClose}>
+            Your account requires admin approval. Please wait for approval to
+            access the dashboard.
+          </Alert>
+
           <form onSubmit={handleSubmit} noValidate>
             <TextField
               label="First Name"
@@ -89,6 +102,7 @@ const Register = () => {
               required
               fullWidth
               error={!!error}
+              sx={{ marginBottom: 2 }} // Added spacing
               helperText={error ? "Please provide first name" : ""}
             />
             <TextField
@@ -100,6 +114,7 @@ const Register = () => {
               required
               fullWidth
               error={!!error}
+              sx={{ marginBottom: 2 }} // Added spacing
               helperText={error ? "Please provide last name" : ""}
             />
             <TextField
@@ -111,6 +126,7 @@ const Register = () => {
               required
               fullWidth
               error={!!error}
+              sx={{ marginBottom: 2 }} // Added spacing
               helperText={error ? "Please provide email" : ""}
             />
             <TextField
@@ -122,6 +138,7 @@ const Register = () => {
               required
               fullWidth
               error={!!error}
+              sx={{ marginBottom: 2 }} // Added spacing
               helperText={error ? "Please provide password" : ""}
             />
             <TextField
@@ -133,6 +150,7 @@ const Register = () => {
               required
               fullWidth
               error={!!error}
+              sx={{ marginBottom: 2 }} // Added spacing
               helperText={error ? "Please provide confirm password" : ""}
             />
             <Button

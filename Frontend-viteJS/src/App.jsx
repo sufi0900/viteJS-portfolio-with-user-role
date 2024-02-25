@@ -29,6 +29,7 @@ import AddEditEducation from "./pages/AddEditEducation";
 import AddEditServices from "./pages/AddEditServices";
 import AddEditTestimonial from "./pages/AddEditTestimonial";
 import BlogDetail from "./BlogDetail";
+import ApprovalPage from "./pages/Approval";
 function App() {
   const dispatch = useDispatch();
   // Dispatch checkSession action on app start or user interactions (e.g., onClick, useEffect)
@@ -53,6 +54,7 @@ function App() {
           <Route path="/editPortfolio2/:id" element={<AddEdittechnology />} />
           <Route path="/editPortfolio3/:id" element={<AddEditAbout />} />
           <Route path="/editTour/:id" element={<AddEditBlog />} />
+          <Route path="/approval" element={<ApprovalPage />} />
 
           <Route path="/about" element={<About />} />
           <Route path="/blogs" element={<BlogsSection />} />

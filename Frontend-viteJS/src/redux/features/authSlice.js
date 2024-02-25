@@ -24,6 +24,7 @@ export const login = createAsyncThunk(
         profile.token = token;
         localStorage.setItem("profile", JSON.stringify(profile));
       }
+      // eslint-disable-next-line no-undef
       navigate("/adminDashboard");
       return response.data;
     } catch (err) {
@@ -38,7 +39,7 @@ export const register = createAsyncThunk(
     try {
       const response = await api.signUp(formValue);
       toast.success("Register Successfully");
-      navigate("/adminDashboard");
+      navigate("/login"); // Set the redirect path
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -130,6 +131,7 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     sessionToken: null, // Add this line to store the session token
+    redirectPath: null, // Add a redirectPath field to store the desired redirect path
 
     error: "",
     loading: false,
@@ -142,6 +144,9 @@ const authSlice = createSlice({
     setLogout: (state, action) => {
       localStorage.clear();
       state.user = null;
+    },
+    setRedirectPath: (state, action) => {
+      state.redirectPath = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -209,6 +214,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, setLogout } = authSlice.actions;
+export const { setUser, setLogout, setRedirectPath } = authSlice.actions;
 
 export default authSlice.reducer;

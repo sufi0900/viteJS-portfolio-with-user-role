@@ -94,4 +94,23 @@ export const requireAdmin = async (req, res, next) => {
     res.status(401).json({ message: "Unauthorized" });
   }
 };
+// Additional middleware for superadmin role
+export const requireSuperAdmin = async (req, res, next) => {
+  try {
+    const user = await UserModal.findById(req.userId);
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    if (user.role !== "superadmin") {
+      return res
+        .status(403)
+        .json({ message: "Forbidden - Requires Super Admin" });
+    }
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
 export default auth;

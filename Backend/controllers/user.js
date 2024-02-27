@@ -130,3 +130,38 @@ export const changePassword = async (req, res) => {
     console.log(error);
   }
 };
+// You would need to add a couple of functions to change a user's role
+export const setUserRole = async (req, res) => {
+  const { userId, role } = req.body; // Pass the user's ID and the new role
+
+  // Only allow "admin" or "user" roles to be set by superadmins
+  const validRoles = ["admin", "user"];
+  if (!validRoles.includes(role)) {
+    return res.status(400).json({ message: "Invalid role assignment" });
+  }
+
+  try {
+    const user = await UserModal.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User does not exist" });
+    }
+
+    // Set the new role
+    user.role = role;
+    await user.save();
+
+    res.status(200).json({ message: "User role updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+// Add functionality to list all users, but only for superadmins
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await UserModal.find({});
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};

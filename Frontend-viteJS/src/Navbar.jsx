@@ -18,7 +18,13 @@ import {
   getPortfolios,
   getPortfoliosByUser,
 } from "./redux/features/portfolioSlice";
-import { AdminPanelSettings, Login } from "@mui/icons-material";
+import {
+  AdminPanelSettings,
+  AdminPanelSettingsOutlined,
+  AppRegistration,
+  Login,
+  Logout,
+} from "@mui/icons-material";
 
 const navigation = [
   { name: "Home", to: "#home", current: false },
@@ -26,6 +32,8 @@ const navigation = [
   { name: "Projects", to: "#projects", current: false },
   { name: "Blogs", to: "#blogs", current: false },
   { name: "Contact", to: "#contact", current: false },
+  { name: "SuperAdmin", to: "/superadmin", current: false }, // New SuperAdmin link
+
   // { name: "Contact", to: "contact", current: false },
 ];
 
@@ -206,25 +214,59 @@ function Navbar() {
                               )}
                               onClick={handleAdminClick}
                             >
-                              <AdminPanelSettings /> AdminDashboard
+                              <AdminPanelSettings /> Admin <br /> Dashboard
                             </HashLink>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
                             <HashLink
-                              to="/login"
+                              to="/superadmin"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm  text-blue-600 "
                               )}
                               onClick={handleAdminClick}
                             >
-                              <Login /> Login
+                              <AdminPanelSettingsOutlined /> SuperAdmin
                             </HashLink>
                           )}
                         </Menu.Item>
-                        <Menu.Item>
+
+                        {!user?.result?._id && (
+                          <>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <HashLink
+                                  to="/login"
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm  text-sky-500"
+                                  )}
+                                  onClick={handleAdminClick}
+                                >
+                                  <Login /> Login
+                                </HashLink>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <HashLink
+                                  to="/signup"
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-lime-600"
+                                  )}
+                                  onClick={handleAdminClick}
+                                >
+                                  <AppRegistration /> Sign Up
+                                </HashLink>
+                              )}
+                            </Menu.Item>
+                          </>
+                        )}
+
+                        {/* <Menu.Item>
                           {({ active }) => (
                             <HashLink
                               to="#contact"
@@ -236,8 +278,8 @@ function Navbar() {
                               Contact
                             </HashLink>
                           )}
-                        </Menu.Item>
-                        <Menu.Item>
+                        </Menu.Item> */}
+                        {/* <Menu.Item>
                           {({ active }) => (
                             <HashLink
                               to="#skills"
@@ -249,8 +291,8 @@ function Navbar() {
                               Skills
                             </HashLink>
                           )}
-                        </Menu.Item>
-                        <Menu.Item>
+                        </Menu.Item> */}
+                        {/* <Menu.Item>
                           {({ active }) => (
                             <HashLink
                               to="#services"
@@ -262,7 +304,7 @@ function Navbar() {
                               Services
                             </HashLink>
                           )}
-                        </Menu.Item>
+                        </Menu.Item> */}
                         {/* <Menu.Item>
                           {({ active }) => (
                             <HashLink
@@ -284,11 +326,11 @@ function Navbar() {
                                 to="/"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
+                                  "block px-4 py-2 text-sm   text-red-600"
                                 )}
                                 onClick={handleLogout}
                               >
-                                LogOut
+                                <Logout /> LogOut
                               </HashLink>
                             )}
                           </Menu.Item>

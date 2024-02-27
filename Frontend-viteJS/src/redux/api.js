@@ -19,6 +19,9 @@ API.interceptors.request.use((config) => {
   }
   return config;
 });
+export const fetchUsers = () => API.get("/users/allUsers");
+export const updateUserRole = (userId, role) =>
+  API.post("/users/setUserRole", { userId, role });
 export const signIn = (formData) => API.post("/users/signin", formData);
 export const signUp = (formData) => API.post("/users/signup", formData);
 export const changeEmail = (formData) =>

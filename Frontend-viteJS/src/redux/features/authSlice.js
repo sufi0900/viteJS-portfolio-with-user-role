@@ -25,7 +25,7 @@ export const login = createAsyncThunk(
         localStorage.setItem("profile", JSON.stringify(profile));
       }
       // eslint-disable-next-line no-undef
-      navigate("/adminDashboard");
+      navigate("/");
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -125,6 +125,34 @@ export const changePassword = createAsyncThunk(
     }
   }
 );
+export const fetchAllUsers = createAsyncThunk(
+  "auth/fetchAllUsers",
+  async (formData, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.fetchUsers();
+      dispatch(setUsers(response.data)); // Update the users array in the state
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// ... other actions ...
+
+// In the updateUserRole action
+export const updateUserRole = createAsyncThunk(
+  "auth/updateUserRole",
+  async ({ userId, role }, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.updateUserRole(userId, role);
+      dispatch(setUsers(response.data)); // Update the users array in the state
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -132,6 +160,7 @@ const authSlice = createSlice({
     user: null,
     sessionToken: null, // Add this line to store the session token
     redirectPath: null, // Add a redirectPath field to store the desired redirect path
+    users: [], // Add a users array to store all users
 
     error: "",
     loading: false,
@@ -141,6 +170,10 @@ const authSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    setUsers: (state, action) => {
+      state.users = action.payload;
+    },
+
     setLogout: (state, action) => {
       localStorage.clear();
       state.user = null;
@@ -214,6 +247,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, setLogout, setRedirectPath } = authSlice.actions;
+export const { setUser, setLogout, setRedirectPath, setUsers } =
+  authSlice.actions;
 
 export default authSlice.reducer;

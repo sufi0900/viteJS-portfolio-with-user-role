@@ -8,6 +8,8 @@ import AdminRoutes from "./pages/AdminRoutes.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import PrivateAdminRoute from "./pages/PrivateRoute.jsx";
+import SuperAdminPage from "./pages/SuperAdmin.jsx";
+import SuperAdminRoute from "./pages/PrivateSuperAdminRoute.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
@@ -20,6 +22,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <PrivateAdminRoute>
               <AdminRoutes />
             </PrivateAdminRoute>
+          }
+        />
+        <Route
+          path="/superadmin/*"
+          element={
+            <SuperAdminRoute>
+              <SuperAdminPage />
+            </SuperAdminRoute>
           }
         />
         <Route path="/register" element={<Register />} />

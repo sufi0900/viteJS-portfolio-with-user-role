@@ -8,7 +8,7 @@ const SuperAdminRoute = ({ children }) => {
   return user?.result?.role === "superadmin" ? (
     children
   ) : (
-    <Navigate to="/login" />
+    <Navigate to="/approval" />
   );
 };
 export default SuperAdminRoute;
